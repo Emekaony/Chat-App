@@ -8,6 +8,14 @@
 import UIKit
 
 class LoginViewController: UIViewController {
+    
+    private let imageView: UIImageView = {
+       let imageView = UIImageView()
+        imageView.image = UIImage(named: "logo")
+        imageView.contentMode = .scaleAspectFit
+        
+        return imageView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +29,18 @@ class LoginViewController: UIViewController {
                                                             target: self,
                                                             // target-action pair for objc methods
                                                             action: #selector(didTapRegister))
+        
+        // add subviews
+        view.addSubview(imageView)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let size = view.width/3
+        imageView.frame = CGRect(x: (view.width-size)/2,
+                                 y: (view.height-size)/2,
+                                 width: size,
+                                 height: size)
     }
     
     @objc private func didTapRegister() {
