@@ -28,6 +28,26 @@ class LoginViewController: UIViewController {
         field.placeholder = "Email Address..."
         field.setLeftPaddingPoints(10)
         field.setRightPaddingPoints(10)
+        field.backgroundColor = .white
+        
+        return field
+    }()
+    
+    private let passwordField: UITextField = {
+        let field = UITextField()
+        field.autocapitalizationType = .none
+        field.autocorrectionType = .no
+        // this will let them go from the email field to the password field
+        field.returnKeyType = .done
+        field.layer.cornerRadius = 12
+        field.layer.borderWidth = 1
+        // figure out why this is cgColor
+        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.placeholder = "Password..."
+        field.setLeftPaddingPoints(10)
+        field.setRightPaddingPoints(10)
+        field.backgroundColor = .white
+        field.isSecureTextEntry = true
         
         return field
     }()
@@ -38,6 +58,18 @@ class LoginViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         
         return imageView
+    }()
+    
+    private let loginButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Log In", for: .normal)
+        button.backgroundColor = .link
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 12
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        
+        return button
     }()
 
     override func viewDidLoad() {
@@ -57,6 +89,8 @@ class LoginViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
         scrollView.addSubview(emailField)
+        scrollView.addSubview(passwordField)
+        scrollView.addSubview(loginButton)
     }
     
     override func viewDidLayoutSubviews() {
@@ -74,6 +108,16 @@ class LoginViewController: UIViewController {
                                   y: imageView.bottom+10,
                                   width: scrollView.width-60,
                                   // 52 is the standardized size of a textField height
+                                  height: 52)
+        
+        passwordField.frame = CGRect(x: 30,
+                                  y: emailField.bottom+10,
+                                  width: scrollView.width-60,
+                                  height: 52)
+        
+        loginButton.frame = CGRect(x: 30,
+                                  y: passwordField.bottom+10,
+                                  width: scrollView.width-60,
                                   height: 52)
     }
     
