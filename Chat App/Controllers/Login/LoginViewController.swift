@@ -9,6 +9,29 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.clipsToBounds = true
+        return scrollView
+    }()
+    
+    private let emailField: UITextField = {
+        let field = UITextField()
+        field.autocapitalizationType = .none
+        field.autocorrectionType = .no
+        // this will let them go from the email field to the password field
+        field.returnKeyType = .continue
+        field.layer.cornerRadius = 12
+        field.layer.borderWidth = 1
+        // figure out why this is cgColor
+        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.placeholder = "Email Address..."
+        field.setLeftPaddingPoints(10)
+        field.setRightPaddingPoints(10)
+        
+        return field
+    }()
+    
     private let imageView: UIImageView = {
        let imageView = UIImageView()
         imageView.image = UIImage(named: "logo")
@@ -31,16 +54,27 @@ class LoginViewController: UIViewController {
                                                             action: #selector(didTapRegister))
         
         // add subviews
-        view.addSubview(imageView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(imageView)
+        scrollView.addSubview(emailField)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let size = view.width/3
-        imageView.frame = CGRect(x: (view.width-size)/2,
-                                 y: (view.height-size)/2,
+        // here we say that the scrollView should take up all the space in the parent view
+        scrollView.frame = view.bounds
+        let size = scrollView.width/3
+        imageView.frame = CGRect(x: (scrollView.width-size)/2,
+                                 y: 20,
                                  width: size,
                                  height: size)
+        
+        emailField.frame = CGRect(x: 30,
+                                  // this says that the email field will be 10 below the logo
+                                  y: imageView.bottom+10,
+                                  width: scrollView.width-60,
+                                  // 52 is the standardized size of a textField height
+                                  height: 52)
     }
     
     @objc private func didTapRegister() {
