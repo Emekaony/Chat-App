@@ -85,6 +85,8 @@ class LoginViewController: UIViewController {
                                                             // target-action pair for objc methods
                                                             action: #selector(didTapRegister))
         
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        
         // add subviews
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
@@ -119,6 +121,23 @@ class LoginViewController: UIViewController {
                                   y: passwordField.bottom+10,
                                   width: scrollView.width-60,
                                   height: 52)
+    }
+    
+    @objc func loginButtonTapped() {
+        guard let email = emailField.text, let password = passwordField.text,
+              !email.isEmpty, !password.isEmpty, password.count >= 6 else {
+            alertUserLoginError()
+            return
+        }
+        
+        // FireBase log in
+                
+    }
+    
+    func alertUserLoginError() {
+        let alert = UIAlertController(title: "Woops", message: "Please enter all required information to Log In.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+        present(alert, animated: true)
     }
     
     @objc private func didTapRegister() {
