@@ -87,6 +87,9 @@ class LoginViewController: UIViewController {
         
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         
+        emailField.delegate = self
+        passwordField.delegate = self
+        
         // add subviews
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
@@ -123,7 +126,12 @@ class LoginViewController: UIViewController {
                                   height: 52)
     }
     
-    @objc func loginButtonTapped() {
+    @objc private func loginButtonTapped() {
+        
+        // get rid of the keyboard when the login button is pressed
+        emailField.resignFirstResponder()
+        passwordField.resignFirstResponder()
+        
         guard let email = emailField.text, let password = passwordField.text,
               !email.isEmpty, !password.isEmpty, password.count >= 6 else {
             alertUserLoginError()
@@ -134,7 +142,7 @@ class LoginViewController: UIViewController {
                 
     }
     
-    func alertUserLoginError() {
+    private func alertUserLoginError() {
         let alert = UIAlertController(title: "Woops", message: "Please enter all required information to Log In.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
         present(alert, animated: true)
@@ -145,6 +153,20 @@ class LoginViewController: UIViewController {
         vc.title = "Create Account"
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+}
 
+//MARK: - Text Field Delegation
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == emailField {
+            // if we are on the email field and we press return, move the cursor to the password field
+            passwordField.becomeFirstResponder()
+        } else if textField == passwordField {
+            loginButtonTapped()
+        }
+        
+        return true
+    }
 }
